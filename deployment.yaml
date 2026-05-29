@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zomato-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zomato
+  template:
+    metadata:
+      labels:
+        app: zomato
+    spec:
+      containers:
+      - name: zomato
+        image: 653136267460.dkr.ecr.ap-south-1.amazonaws.com/zomato:latest
+        ports:
+        - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zomato-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: zomato
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
